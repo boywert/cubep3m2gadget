@@ -1,11 +1,11 @@
 #include <stdio.h>
 
-int highword(long *longword)
+int highword_(long *longword)
 {
   long w = *longword;
   return =(w >> 32);
 }
-int lowword(long *longword)
+int lowword_(long *longword)
 {
   long w = *longword;
   return (w & (0xFFFF));
