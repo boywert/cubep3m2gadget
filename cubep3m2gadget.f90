@@ -23,8 +23,10 @@ program test
   
   redshift = 8.064
   write(z_s, "(f10.3)") redshift
+  z_s = adjustl(z_s)
   write(str_rank, "(I10)") rank
-  xv_input = trim('/scratch/00506/ilievit/cubepm_130315_6_1728_47Mpc_ext2/results/')//z_s(1:len_trim(z_s))//'xv'//str_rank(1:len_trim(str_rank))//'.dat'
+  str_rank = adjustl(str_rank)
+  xv_input = "/scratch/00506/ilievit/cubepm_130315_6_1728_47Mpc_ext2/results/"//z_s(1:len_trim(z_s))//"xv"//str_rank(1:len_trim(str_rank))//".dat"
   pid_input = "/scratch/00506/ilievit/cubepm_130315_6_1728_47Mpc_ext2/results/"//z_s(1:len_trim(z_s))//"PID"//str_rank(1:len_trim(str_rank))//".dat"
   output = "/scratch/01937/cs390/test/"
   call system("mkdir -p "//trim(output))
