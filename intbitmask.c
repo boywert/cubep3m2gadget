@@ -1,5 +1,6 @@
 #include <stdio.h>
-
+void highword(long *longword, int *high);
+void lowword(long *longword, int *low);
 void highword(long *longword, int *high)
 {
   (*high) =((*longword) >> 32);
