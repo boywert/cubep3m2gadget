@@ -66,7 +66,7 @@ program test
   g_mass(1:6) = 0.0d0
   g_mass(2) = real(mass_p,8)
   g_npart(1:6) = 0
-  g_npart(2) = np_loc
+  g_npart(2) = np_local
   mpi_npart = 4294967296
   g_npartTotal = g_npart
   g_flag_sfr = 0
