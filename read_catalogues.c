@@ -336,5 +336,5 @@ long gadget_load_snapshot(char *fname, int files)
 
 int main ()
 {
-  printf("%ld\n",gadget_load_snapshot("../test.bin",2048));
+  printf("%ld\n",gadget_load_snapshot("/scratch/01937/cs390/test/8.064/8.064.0",2048));
 }
