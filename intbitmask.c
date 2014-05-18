@@ -1,11 +1,11 @@
 #include <stdio.h>
-void highword(long *longword, int *high);
-void lowword(long *longword, int *low);
-void highword(long *longword, int *high)
+void highword_(long *longword, int *high);
+void lowword_(long *longword, int *low);
+void highword_(long *longword, int *high)
 {
   (*high) =((*longword) >> 32);
 }
-void lowword(long *longword, int *low)
+void lowword_(long *longword, int *low)
 {
   (*low) = ((*longword) & (0xFFFF));
 }
