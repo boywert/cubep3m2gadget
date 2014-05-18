@@ -85,8 +85,8 @@ program test
   
   g_npartTotal(1:6) = 0
   g_nhighword(1:6) = 0
-  call lowword(mpi_nparttotal,g_npartTotal(2))
-  call highword(mpi_nparttotal,g_nhighword(2))
+  g_npartTotal(2) = lowword(mpi_nparttotal)
+  g_nhighword(2) = highword(mpi_nparttotal)
   open(unit=21,file=trim(output),form='unformatted')
   
   write(21) g_npart, g_mass, g_time, g_redshift, g_flag_sfr, g_flag_feedback, g_npartTotal, &
