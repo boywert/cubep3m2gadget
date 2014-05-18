@@ -1,4 +1,5 @@
 program test
+  use mpi
   implicit none
   integer(4) :: i, np_local, nts, cur_checkpoint, cur_projection, cur_halofind
   real(4) :: a, t, tau, dt_f_acc, dt_pp_acc, dt_c_acc, mass_p
@@ -12,8 +13,18 @@ program test
   integer(4) :: num_files
   character(len=100) :: str_rank,z_s,input,output
   real(8) :: redshift
-  integer(4) :: totalnodes,rank
+  integer(4) :: totalnodes,rank,ierr
+
+  call mpi_init(ierr)
+  call mpi_comm_size(mpi_comm_world,totalnodes,ierr)
+  if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
+  call mpi_comm_rank(mpi_comm_world,rank,ierr)
+  if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
   
+  redshift = 8.064
+  write(str_z, "(f10.3)") redshift
+  input = "/scratch/00506/ilievit/cubepm_130315_6_1728_47Mpc_ext2/results/"
+  output = "/scratch/01937/cs390/"
   OmegaLambda = 0.73
   Omega0 = 0.27
   HubbleParam = 0.7
@@ -70,4 +81,6 @@ program test
   close(21)
   
   deallocate(xv,PID)
+
+  call mpi_finalize(ierr)
 end program test
