@@ -10,6 +10,17 @@ program test
   real(8) :: g_mass(6), g_time, g_redshift, g_Boxsize, g_Omega0, g_OmegaLambda, g_HubbleParam
   real(4) :: boxsize, Omega0, OmegaLambda, HubbleParam
   integer(4) :: num_files
+  character(len=100) :: str_rank,z_s,input,output
+  real(8) :: redshift
+  integer(4) :: totalnodes,rank
+  
+  OmegaLambda = 0.73
+  Omega0 = 0.27
+  HubbleParam = 0.7
+  num_files = 2048
+  boxsize = 47.0
+  
+
 #define EXTRAPID
 
 #ifdef EXTRAPID
@@ -31,11 +42,6 @@ program test
   close(21)
 #endif
 
-  OmegaLambda = 0.7
-  Omega0 = 0.3
-  HubbleParam = 0.7
-  num_files = 1  
-  boxsize = 47.0
   g_mass(1:6) = 0.0d0
   g_mass(2) = real(mass_p,8)
   g_npart(1:6) = 0
@@ -50,7 +56,7 @@ program test
   g_OmegaLambda = OmegaLambda
   g_HubbleParam = HubbleParam
 
-  open(unit=21,file="../test.bin.0",form='unformatted')
+  open(unit=21,file="/scratch/01937/cs390/test.bin.0",form='unformatted')
   
   write(21) g_npart, g_mass, g_time, g_redshift, g_flag_sfr, g_flag_feedback, g_npartTotal, &
        g_flag_cooling, g_num_files, g_boxsize, g_Omega0, g_OmegaLambda, g_HubbleParam, &
