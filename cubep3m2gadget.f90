@@ -35,7 +35,7 @@ program test
   Omega0 = 0.3
   HubbleParam = 0.7
   num_files = 1  
-
+  boxsize = 47.0
   g_mass(1:6) = 0.0d0
   g_mass(2) = real(mass_p,8)
   g_npart(1:6) = 0
