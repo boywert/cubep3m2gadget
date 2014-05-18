@@ -3,12 +3,17 @@
 int highword_(long *longword)
 {
   long w = *longword;
-  printf("high:%ld\n",w);
-  return (w >> 32);
+  int k;
+  k = (w >> 32);
+  printf("high:%ld->%d\n",w,k);
+  return k;
 }
 int lowword_(long *longword)
 {
   long w = *longword;
-  printf("low:%ld\n",w);
-  return (w & (0xFFFF));
+  int k;
+  printf("low:%ld->%d\n",w,k);
+  k =  (w & (0xFFFF));
+  printf("low:%ld->%d\n",w,k);
+  return k;
 }
