@@ -12,7 +12,6 @@ int lowword_(long *longword)
 {
   long w = *longword;
   int k;
-  printf("low:%ld->%d\n",w,k);
   k =  (w & (0xFFFF));
   printf("low:%ld->%d\n",w,k);
   return k;
