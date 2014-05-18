@@ -37,6 +37,9 @@ program test
   open(unit=21,file="/scratch/00506/ilievit/cubepm_130315_6_1728_47Mpc_ext2/results/8.064PID0.dat",status='old',form='binary')
   read(21) np_local,a,t,tau,nts,dt_f_acc,dt_pp_acc,dt_c_acc,cur_checkpoint, &
        cur_projection,cur_halofind,mass_p
+  print*, np_local,a,t,tau,nts,dt_f_acc,dt_pp_acc,dt_c_acc,cur_checkpoint, &
+       cur_projection,cur_halofind,mass_p
+  
 
   read(21) PID
   close(21)
