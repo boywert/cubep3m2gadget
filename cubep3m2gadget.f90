@@ -22,7 +22,7 @@ program test
   if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
   
   redshift = 8.064
-  write(str_z, "(f10.3)") redshift
+  write(z_s, "(f10.3)") redshift
   input = "/scratch/00506/ilievit/cubepm_130315_6_1728_47Mpc_ext2/results/"
   output = "/scratch/01937/cs390/"
   OmegaLambda = 0.73
