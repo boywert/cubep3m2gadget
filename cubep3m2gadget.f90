@@ -5,7 +5,7 @@ program test
   real(4) :: a, t, tau, dt_f_acc, dt_pp_acc, dt_c_acc, mass_p
   real(4), allocatable, dimension(:,:) :: xv
   integer(8), allocatable, dimension(:) :: PID
-  integer(8) :: mpi_npart(6), mpi_nparttotal(6)
+  integer(8) :: mpi_npart, mpi_nparttotal
   integer(4) :: g_npart(6),g_flag_sfr,g_flag_feedback,g_npartTotal(6),g_flag_cooling,g_num_files
   integer(4) :: g_flag_stellarage, g_flag_metals, g_nhighword(6), g_filler(16)
   real(8) :: g_mass(6), g_time, g_redshift, g_Boxsize, g_Omega0, g_OmegaLambda, g_HubbleParam
@@ -28,7 +28,7 @@ program test
   str_rank = adjustl(str_rank)
   xv_input = "/scratch/00506/ilievit/cubepm_130315_6_1728_47Mpc_ext2/results/"//z_s(1:len_trim(z_s))//"xv"//str_rank(1:len_trim(str_rank))//".dat"
   pid_input = "/scratch/00506/ilievit/cubepm_130315_6_1728_47Mpc_ext2/results/"//z_s(1:len_trim(z_s))//"PID"//str_rank(1:len_trim(str_rank))//".dat"
-  output = "/scratch/01937/cs390/test/"
+  output = "/scratch/01937/cs390/test/"//z_s(1:len_trim(z_s))//"/"
   call system("mkdir -p "//trim(output))
   output = trim(output)//"/"//z_s(1:len_trim(z_s))//"."//str_rank(1:len_trim(str_rank))
   OmegaLambda = 0.73
@@ -66,6 +66,7 @@ program test
   g_mass(2) = real(mass_p,8)
   g_npart(1:6) = 0
   g_npart(2) = np_local
+  mpi_npart = np_local
   g_npartTotal = g_npart
   g_flag_sfr = 0
   g_flag_feedback = 0
@@ -76,6 +77,15 @@ program test
   g_OmegaLambda = OmegaLambda
   g_HubbleParam = HubbleParam
 
+
+  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
+  call mpi_allreduce(mpi_npart,mpi_nparttotal,1,mpi_integer8,mpi_sum,mpi_comm_world,ierr)
+  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
+  
+  g_npartTotal(1:6) = 0
+  g_nhighword(1:6) = 0
+  g_npartTotal(2) = lowword(mpi_nparttotal)
+  g_nhighword(2) = highword(mpi_nparttotal)
   open(unit=21,file=trim(output),form='unformatted')
   
   write(21) g_npart, g_mass, g_time, g_redshift, g_flag_sfr, g_flag_feedback, g_npartTotal, &
