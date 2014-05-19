@@ -1,0 +1,12 @@
+#!/bin/bash     
+#SBATCH -J cubep3m2gadget        # Job Name
+#SBATCH -o /scratch/01937/cs390/mpilogs/cubep3m2gadget.%j    
+#SBATCH -N 128 -n 2048           # Total number of mpi tasks requested
+#SBATCH -p normal  # Queue (partition) name -- normal, development, etc.
+#SBATCH -t 24:00:00     # Run time (hh:mm:ss) - 1.5 hours
+export OMP_NUM_THREADS=1
+#export MKL_MIC_ENABLE=1
+#export MIC_PREFIX=MIC  
+#export MIC_OMP_NUM_THREADS=240  
+#export KMP_AFFINITY=scatter
+/usr/bin/time -p ibrun tacc_affinity ./cubep3m2gadget

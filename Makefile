@@ -1,7 +1,5 @@
-all: convert read
-convert: cubep3m2gadget.f90 intbitmask.c
-	mpif90 -c -free -fpp cubep3m2gadget.f90
-	mpicc -c intbitmask.c
-	mpif90 -fpp intbitmask.o cubep3m2gadget.o -o convert
+all: cubep3m2gadget read
+cubep3m2gadget: cubep3m2gadget.f90 
+	mpif90 -fpp cubep3m2gadget.f90 -o cubep3m2gadget
 read: read_catalogues.c
 	mpicc read_catalogues.c -o read
