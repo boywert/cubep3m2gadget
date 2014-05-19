@@ -44,7 +44,6 @@ program test
   !       call abort
   !    endif
   ! endif
-
   write(z_s, "(f10.3)") redshift
   z_s = adjustl(z_s)
   write(str_rank, "(I10)") rank
@@ -92,6 +91,7 @@ program test
   do i=1,3
      xv(i,1:np_local) = ((xv(i,1:np_local) + nc_offset(i)))*boxsize/real(ncdim)
   enddo
+  print*, xv(4:6,1:np_local)
   !xv(4:6,1:np_local) = xv(4:6,1:np_local)/sqrt(a)
 
 #endif
