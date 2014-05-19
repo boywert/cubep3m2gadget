@@ -1,7 +1,7 @@
 #!/bin/bash     
 #SBATCH -J cubep3m2gadget        # Job Name
 #SBATCH -o /scratch/01937/cs390/mpilogs/cubep3m2gadget.%j    
-#SBATCH -N 128 -n 2048           # Total number of mpi tasks requested
+#SBATCH -N 224 -n 14           # Total number of mpi tasks requested
 #SBATCH -p normal  # Queue (partition) name -- normal, development, etc.
 #SBATCH -t 24:00:00     # Run time (hh:mm:ss) - 1.5 hours
 #SBATCH -A A-asoz
