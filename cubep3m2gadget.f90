@@ -75,6 +75,7 @@ program test
   g_num_files = num_files
   g_Boxsize = boxsize
   g_Omega0 = Omega0
+  g_redshift = redshift
   g_OmegaLambda = OmegaLambda
   g_HubbleParam = HubbleParam
 
