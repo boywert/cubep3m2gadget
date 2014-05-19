@@ -78,15 +78,14 @@ program test
   g_OmegaLambda = OmegaLambda
   g_HubbleParam = HubbleParam
 
-
   call MPI_BARRIER(MPI_COMM_WORLD,ierr)
   call mpi_allreduce(mpi_npart,mpi_nparttotal,1,mpi_integer8,mpi_sum,mpi_comm_world,ierr)
   call MPI_BARRIER(MPI_COMM_WORLD,ierr)
   
   g_npartTotal(1:6) = 0
   g_nhighword(1:6) = 0
-  g_npartTotal(2) = lowword(mpi_nparttotal)
-  g_nhighword(2) = highword(mpi_nparttotal)
+  g_npartTotal(2) = iand(mpi_comm_world,0xffffffff)
+  g_nhighword(2) = ishft(mpi_nparttotal,32)
   open(unit=21,file=trim(output),form='unformatted')
   
   write(21) g_npart, g_mass, g_time, g_redshift, g_flag_sfr, g_flag_feedback, g_npartTotal, &
