@@ -4,6 +4,7 @@
 #SBATCH -N 128 -n 2048           # Total number of mpi tasks requested
 #SBATCH -p normal  # Queue (partition) name -- normal, development, etc.
 #SBATCH -t 24:00:00     # Run time (hh:mm:ss) - 1.5 hours
+#SBATCH -A A-asoz
 export OMP_NUM_THREADS=1
 #export MKL_MIC_ENABLE=1
 #export MIC_PREFIX=MIC  
