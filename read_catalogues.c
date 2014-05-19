@@ -177,7 +177,7 @@ long gadget_load_snapshot(char *fname, int files)
 	    
 	      for(j=0;j<3;j++)
 		{
-		  printf("%lf %lf %lf\n",tmp[0],tmp[1],tmp[2])
+		  printf("%lf %lf %lf\n",tmp[0],tmp[1],tmp[2]);
 		}
 
 	      pc_new++;
