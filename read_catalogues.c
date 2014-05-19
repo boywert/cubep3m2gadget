@@ -120,12 +120,12 @@ long gadget_load_snapshot(char *fname, int files)
 	  printf("Total numpart : %ld\n",NumPart);
 	  
 	  //allocate_memory();
-	  P = malloc(NumPart * sizeof(struct Gadget_particle));
-	  Id = malloc(NumPart * sizeof(int));
-	  PIDmap = malloc(NumPart * sizeof(int));
-	  P--;
-	  Id--;
-	  PIDmap--;
+	  /* P = malloc(NumPart * sizeof(struct Gadget_particle)); */
+	  /* Id = malloc(NumPart * sizeof(int)); */
+	  /* PIDmap = malloc(NumPart * sizeof(int)); */
+	  /* P--; */
+	  /* Id--; */
+	  /* PIDmap--; */
 	}
       local_nids = 0;
       for(k=0;k<6;k++)
