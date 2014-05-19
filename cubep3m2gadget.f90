@@ -87,9 +87,12 @@ program test
 
      read(21) PID
      close(21)
+     ! convert cubep3m units -> gadget units 
      do i=1,3
-        xv(i,1:np_local) = xv(i,1:np_local) + nc_offset(i)
+        xv(i,1:np_local) = ((xv(i,1:np_local) + nc_offset(i)))*boxsize/real(ncdim)
      enddo
+     xv(4:6,1:np_local) = xv(4:6,1:np_local)/sqrt(a)
+     
 #endif
 
      g_time = a
