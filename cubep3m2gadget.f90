@@ -44,6 +44,7 @@ program test
   !       call abort
   !    endif
   ! endif
+  rank =100
   write(z_s, "(f10.3)") redshift
   z_s = adjustl(z_s)
   write(str_rank, "(I10)") rank
