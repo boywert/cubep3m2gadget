@@ -68,7 +68,7 @@ program test
   g_npart(1:6) = 0
   g_npart(2) = np_local
   mpi_npart = int(np_local,8)
-  g_npartTotal = g_npart
+
   g_flag_sfr = 0
   g_flag_feedback = 0
   g_flag_cooling = 0
