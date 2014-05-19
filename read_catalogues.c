@@ -176,10 +176,9 @@ long gadget_load_snapshot(char *fname, int files)
 #endif
 	    
 	      for(j=0;j<3;j++)
-		//P[pc_new].Pos[j] = (float) tmp[j]*Mpc2kpc;
-	      /* printf("%d => %f\n",pc_new,P[pc_new].Pos[0]); */
-	      /* printf("%d => %f\n",pc_new,P[pc_new].Pos[1]); */
-	      /* printf("%d => %f\n",pc_new,P[pc_new].Pos[2]); */
+		{
+		  printf("%lf %lf %lf\n",tmp[0],tmp[1],tmp[2])
+		}
 
 	      pc_new++;
 	    }
@@ -208,7 +207,7 @@ long gadget_load_snapshot(char *fname, int files)
 #endif
 
 	      for(j=0;j<3;j++)
-		printf("%f %f %f\n",tmp[0],tmp[1],tmp[2]);
+		// printf("%f %f %f\n",tmp[0],tmp[1],tmp[2]);
 		// P[pc_new].Vel[j] = (float) tmp[j]*(header1.redshift+1.);
 	      pc_new++;
 	    }
