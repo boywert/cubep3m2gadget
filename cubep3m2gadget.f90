@@ -81,7 +81,7 @@ program test
      open(unit=21,file=trim(pid_input),status='old',form='binary')
      read(21) np_local,a,t,tau,nts,dt_f_acc,dt_pp_acc,dt_c_acc,cur_checkpoint, &
           cur_projection,cur_halofind,mass_p
-     print*, np_local,a,t,tau,nts,dt_f_acc,dt_pp_acc,dt_c_acc,cur_checkpoint, &
+     if (rank==0) print*, np_local,a,t,tau,nts,dt_f_acc,dt_pp_acc,dt_c_acc,cur_checkpoint, &
           cur_projection,cur_halofind,mass_p
 
 
@@ -119,11 +119,11 @@ program test
 
      g_npartTotal(1:6) = 0
      g_nhighword(1:6) = 0
-     print*,mpi_npart,mpi_nparttotal
+     if(rank == 0 ) print*,"total N",mpi_nparttotal
      g_npartTotal(2) = iand(mpi_nparttotal,2**32-1)
-     print*, g_npartTotal
+     if(rank == 0) print*, g_npartTotal
      g_nhighword(2) = ishft(mpi_nparttotal,-32)
-     print*,g_nhighword
+     if(rank == 0) print*,g_nhighword
      open(unit=21,file=trim(output),form='unformatted')
 
      write(21) g_npart, g_mass, g_time, g_redshift, g_flag_sfr, g_flag_feedback, g_npartTotal, &
