@@ -37,7 +37,7 @@ program test
   if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
   call mpi_comm_rank(mpi_comm_world,rank,ierr)
   if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
-  if(totalnodes == num_files) then
+  if(totalnodes /= num_files) then
      if(rank == 0) then
         print*, "total nodes:",totalnodes,"total files:",num_files
         print*, "aborting"
