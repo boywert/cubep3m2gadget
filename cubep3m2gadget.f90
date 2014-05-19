@@ -2,7 +2,7 @@ program test
   use mpi
   implicit none
   integer(4) :: highword,lowword
-  integer(4) :: i, np_local, nts, cur_checkpoint, cur_projection, cur_halofind
+  integer(4) :: np_local, nts, cur_checkpoint, cur_projection, cur_halofind
   real(4) :: a, t, tau, dt_f_acc, dt_pp_acc, dt_c_acc, mass_p
   real(4), allocatable, dimension(:,:) :: xv
   integer(8), allocatable, dimension(:) :: PID
@@ -87,8 +87,9 @@ program test
 
      read(21) PID
      close(21)
-
-     xv(1:3,*) = xv(1:3,*) + nc_offset(1:3)
+     do i=1,3
+        xv(i,1:np_local) = xv(i,1:np_local) + nc_offset(i)
+     enddo
 #endif
 
      g_time = a
