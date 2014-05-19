@@ -37,13 +37,13 @@ program test
   if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
   call mpi_comm_rank(mpi_comm_world,rank,ierr)
   if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
-  if(totalnodes /= num_files) then
-     if(rank == 0) then
-        print*, "total nodes:",totalnodes,"total files:",num_files
-        print*, "aborting"
-        call abort
-     endif
-  endif
+  ! if(totalnodes /= num_files) then
+  !    if(rank == 0) then
+  !       print*, "total nodes:",totalnodes,"total files:",num_files
+  !       print*, "aborting"
+  !       call abort
+  !    endif
+  ! endif
 
   write(z_s, "(f10.3)") redshift
   z_s = adjustl(z_s)
