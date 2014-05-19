@@ -63,6 +63,8 @@ program test
   close(21)
 #endif
 
+  g_time = a
+
   g_mass(1:6) = 0.0d0
   g_mass(2) = real(mass_p,8)
   g_npart(1:6) = 0
