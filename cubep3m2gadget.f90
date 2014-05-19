@@ -18,6 +18,7 @@ program test
   integer(4) :: ngdim,npdim,ncdim
   real(4) :: nc_offset(3)
   integer(4) :: i,j,k
+  real(4) :: gadgetmass
 
   call mpi_init(ierr)
   npdim = 1728
@@ -26,8 +27,9 @@ program test
   Omega0 = 0.27
   HubbleParam = 0.7
   num_files = 216
-  boxsize = 47.0
+  boxsize = 47.0         !Mpc/h
   redshift = 8.064
+  gadgetmass = 1.0e10    !Msun
 
 
   ncdim = 2*npdim
