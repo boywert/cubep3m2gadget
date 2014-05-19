@@ -84,7 +84,7 @@ program test
   
   g_npartTotal(1:6) = 0
   g_nhighword(1:6) = 0
-  g_npartTotal(2) = iand(mpi_comm_world,0xffffffff)
+  g_npartTotal(2) = iand(mpi_comm_world,ffffffff)
   g_nhighword(2) = ishft(mpi_nparttotal,32)
   open(unit=21,file=trim(output),form='unformatted')
   
