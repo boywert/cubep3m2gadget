@@ -86,7 +86,7 @@ program test
   g_npartTotal(1:6) = 0
   g_nhighword(1:6) = 0
   print*,mpi_npart,mpi_nparttotal
-  g_npartTotal(2) = iand(mpi_nparttotal,2**32)
+  g_npartTotal(2) = iand(mpi_nparttotal,2**32-1)
   print*, g_npartTotal
   g_nhighword(2) = ishft(mpi_nparttotal,-32)
   print*,g_nhighword
