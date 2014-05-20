@@ -1,5 +1,30 @@
+module cubep3m_config
+  implicit none
+  real(4), parameter :: H0 = 100.   ![h*km]/[sec*Mpc]
+  real(4), parameter :: RHO_CRIT_0 = 2.7755397e11   ! [h^2*Msun]/[Mpc^3]
+  real(4) :: Omega0,OmegaLambda,HubbleParam,boxsize
+  integer(4) :: ngdim,npdim,ncdim,num_files
+  npdim = 1728
+  ngdim = 6 
+  OmegaLambda = 0.73
+  Omega0 = 0.27
+  HubbleParam = 0.7
+  num_files = ngdim**3
+  boxsize = 47.0         !Mpc/h
+  ncdim = 2*npdim
+  contains 
+    function vunit_compute(redshift)
+      real(4) :: vunit
+      real(4) :: redshift
+      vunit = boxsize * 1.5 * sqrt(Omega0) * H0 / (ncdim * (1./(1.+redshift)))
+      return
+    end function vunit
+end module cubep3m_config
+
+
 program test
   use mpi
+  use cubep3m_config
   implicit none
   integer(4) :: highword,lowword
   integer(4) :: np_local, nts, cur_checkpoint, cur_projection, cur_halofind
@@ -10,29 +35,18 @@ program test
   integer(4) :: g_npart(6),g_flag_sfr,g_flag_feedback,g_npartTotal(6),g_flag_cooling,g_num_files
   integer(4) :: g_flag_stellarage, g_flag_metals, g_nhighword(6), g_filler(16)
   real(8) :: g_mass(6), g_time, g_redshift, g_Boxsize, g_Omega0, g_OmegaLambda, g_HubbleParam
-  real(4) :: boxsize, Omega0, OmegaLambda, HubbleParam
-  integer(4) :: num_files
+
   character(len=100) :: str_rank,z_s,xv_input,pid_input,output
   real(8) :: redshift
   integer(4) :: totalnodes,rank,ierr
-  integer(4) :: ngdim,npdim,ncdim
   real(4) :: nc_offset(3)
   integer(4) :: i,j,k
-  real(4) :: gadgetmass
+  real(4) :: gadgetmass,vunit
 
   call mpi_init(ierr)
-  npdim = 1728
-  ngdim = 6 
-  OmegaLambda = 0.73
-  Omega0 = 0.27
-  HubbleParam = 0.7
-  num_files = 216
-  boxsize = 47.0         !Mpc/h
   redshift = 8.064
   gadgetmass = 1.0e10    !Msun
-
-
-  ncdim = 2*npdim
+  vunit = vunit_compute(redshift)
   call mpi_comm_size(mpi_comm_world,totalnodes,ierr)
   if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
   call mpi_comm_rank(mpi_comm_world,rank,ierr)
@@ -44,7 +58,6 @@ program test
   !       call abort
   !    endif
   ! endif
-  rank = 215
   write(z_s, "(f10.3)") redshift
   z_s = adjustl(z_s)
   write(str_rank, "(I10)") rank
