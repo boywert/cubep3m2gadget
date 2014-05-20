@@ -1,7 +1,7 @@
 module cubep3m_config
   implicit none
   real(4), parameter :: H0 = 100.   ![h*km]/[sec*Mpc]
-  real(4), parameter :: RHO_CRIT_0 = 2.7755397e11   ! [h^2*Msun]/[Mpc^3]
+  real(4), parameter :: RHO_CRIT_0 = 2.7755397e11   ! [h^2*Msun]/[Mpc^3]27.7473406739
   real(4) :: Omega0,OmegaLambda,HubbleParam,boxsize
   real(4) :: c_vunit, c_munit, c_lunit
   integer(4) :: ngdim,npdim,ncdim,num_files
