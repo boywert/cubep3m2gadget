@@ -21,7 +21,6 @@ module cubep3m_config
       c_vunit = vunit_compute(redshift)
       c_munit = munit_compute()
       c_lunit = lunit_compute()
-      print*, c_lunit, c_vunit, c_munit
       return
     end subroutine cubep3m_config_init
 
@@ -127,6 +126,11 @@ program test
   close(21)
 
   call cubep3m_config_init(redshift)
+  if(rank == 0) then
+     print*, "lunit:",c_lunit,"Mpc/h"
+     print*, "vunit:",c_vunit,"km/s"
+     print*, "munit:",c_munit,"1.0e10 Msun/h"
+  endif
   ! convert cubep3m units -> gadget units 
   do i=1,3
      xv(i,1:np_local) = ((xv(i,1:np_local) + nc_offset(i)))*c_lunit
