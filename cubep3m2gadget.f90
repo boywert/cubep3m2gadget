@@ -23,7 +23,7 @@ module cubep3m_config
     end subroutine cubep3m_config_init
 
     function vunit_compute(redshift)
-      real(4) :: vunit
+      real(4) :: vunit_compute
       real(4) :: redshift
       vunit_compute = boxsize * 1.5 * sqrt(Omega0) * H0 / (ncdim * (1./(1.+redshift)))
       return
