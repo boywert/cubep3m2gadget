@@ -3,13 +3,13 @@ module cubep3m_config
   real(4), parameter :: H0 = 100.   ![h*km]/[sec*Mpc]
   real(4), parameter :: RHO_CRIT_0 = 2.7755397e11   ! [h^2*Msun]/[Mpc^3]
   real(4) :: Omega0,OmegaLambda,HubbleParam,boxsize
-  real(4) :: c_vunit, c_munit
+  real(4) :: c_vunit, c_munit, c_lunit
   integer(4) :: ngdim,npdim,ncdim,num_files
   
   contains
-    subroutine cubep3m_config_init(redshift,mass_p)
+    subroutine cubep3m_config_init(redshift)
       implicit none
-      real(4) :: redshift,mass_p
+      real(4) :: redshift
       npdim = 1728
       ngdim = 6 
       OmegaLambda = 0.73
@@ -19,7 +19,9 @@ module cubep3m_config
       boxsize = 47.0         !Mpc/h
       ncdim = 2*npdim
       c_vunit = vunit_compute(redshift)
-      c_munit = munit_compute(mass_p)
+      c_munit = munit_compute()
+      c_lunit = lunit_compute()
+      print*, c_lunit, c_vunit, c_munit
       return
     end subroutine cubep3m_config_init
 
@@ -30,12 +32,18 @@ module cubep3m_config
       return
     end function vunit_compute
 
-    function munit_compute(mass_p)
+    function munit_compute()
       real(4) :: munit_compute
-      real(4) :: mass_p
-      munit_compute = boxsize * boxsize * boxsize * Omega0 * RHO_CRIT_0 / (real(ncdim**3) * mass_p) / 1.0e10  ! 1.e10 Msun/h
+      munit_compute = boxsize * boxsize * boxsize * Omega0 * RHO_CRIT_0 / real(int(npdim,8)**3) / 1.0e10  ! 1.e10 Msun/h
       return 
     end function munit_compute
+
+
+    function lunit_compute()
+      real(4) :: lunit_compute
+      lunit_compute = boxsize/real(ncdim) ! Mpc/h
+      return 
+    end function lunit_compute
 end module cubep3m_config
 
 
@@ -118,7 +126,7 @@ program test
   read(21) PID
   close(21)
 
-  call cubep3m_config_init(redshift,mass_p)
+  call cubep3m_config_init(redshift)
   ! convert cubep3m units -> gadget units 
   do i=1,3
      xv(i,1:np_local) = ((xv(i,1:np_local) + nc_offset(i)))*boxsize/real(ncdim)
