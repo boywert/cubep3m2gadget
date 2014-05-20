@@ -87,9 +87,9 @@ program test
   str_rank = adjustl(str_rank)
   xv_input = "/scratch/00506/ilievit/cubepm_130315_6_1728_47Mpc_ext2/results/"//z_s(1:len_trim(z_s))//"xv"//str_rank(1:len_trim(str_rank))//".dat"
   pid_input = "/scratch/00506/ilievit/cubepm_130315_6_1728_47Mpc_ext2/results/"//z_s(1:len_trim(z_s))//"PID"//str_rank(1:len_trim(str_rank))//".dat"
-  output = "/scratch/01937/cs390/test/"//z_s(1:len_trim(z_s))//"/"
+  output = "/scratch/01937/cs390/cubepm_130315_6_1728_47Mpc_ext2/"//z_s(1:len_trim(z_s))//"/"
   call system("mkdir -p "//trim(output))
-  output = trim(output)//"/"//z_s(1:len_trim(z_s))//"."//str_rank(1:len_trim(str_rank))
+  output = trim(output)//"/cube2gadget_"//z_s(1:len_trim(z_s))//"."//str_rank(1:len_trim(str_rank))
 
   do k=0,ngdim-1
      do j=0,ngdim-1
