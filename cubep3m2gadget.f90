@@ -3,13 +3,13 @@ module cubep3m_config
   real(4), parameter :: H0 = 100.   ![h*km]/[sec*Mpc]
   real(4), parameter :: RHO_CRIT_0 = 2.7755397e11   ! [h^2*Msun]/[Mpc^3]
   real(4) :: Omega0,OmegaLambda,HubbleParam,boxsize
-  real(4) :: c_vunit
+  real(4) :: c_vunit, c_munit
   integer(4) :: ngdim,npdim,ncdim,num_files
   
   contains
-    subroutine cubep3m_config_init(redshift)
+    subroutine cubep3m_config_init(redshift,mass_p)
       implicit none
-      real(4) :: redshift
+      real(4) :: redshift,mass_p
       npdim = 1728
       ngdim = 6 
       OmegaLambda = 0.73
@@ -19,15 +19,23 @@ module cubep3m_config
       boxsize = 47.0         !Mpc/h
       ncdim = 2*npdim
       c_vunit = vunit_compute(redshift)
+      c_munit = munit_compute(mass_p)
       return
     end subroutine cubep3m_config_init
 
     function vunit_compute(redshift)
       real(4) :: vunit_compute
       real(4) :: redshift
-      vunit_compute = boxsize * 1.5 * sqrt(Omega0) * H0 / (ncdim * (1./(1.+redshift)))
+      vunit_compute = boxsize * 1.5 * sqrt(Omega0) * H0 / (ncdim * (1./(1.+redshift)))  !km/s
       return
     end function vunit_compute
+
+    function munit_compute(mass_p)
+      real(4) :: munit_compute
+      real(4) :: mass_p
+      munit_compute = boxsize * boxsize * boxsize * Omega0 * RHO_CRIT_0 / (real(ncdim**3) * mass_p) / 1.0e10  ! 1.e10 Msun/h
+      return 
+    end function munit_compute
 end module cubep3m_config
 
 
@@ -50,12 +58,11 @@ program test
   integer(4) :: totalnodes,rank,ierr
   real(4) :: nc_offset(3)
   integer(4) :: i,j,k
-  real(4) :: gadgetmass
 
   call mpi_init(ierr)
+
   redshift = 8.064
-  gadgetmass = 1.0e10    !Msun
-  call cubep3m_config_init(redshift)
+
   call mpi_comm_size(mpi_comm_world,totalnodes,ierr)
   if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
   call mpi_comm_rank(mpi_comm_world,rank,ierr)
@@ -110,6 +117,8 @@ program test
 
   read(21) PID
   close(21)
+
+  call cubep3m_config_init(redshift,mass_p)
   ! convert cubep3m units -> gadget units 
   do i=1,3
      xv(i,1:np_local) = ((xv(i,1:np_local) + nc_offset(i)))*boxsize/real(ncdim)
