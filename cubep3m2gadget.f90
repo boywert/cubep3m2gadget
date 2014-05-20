@@ -123,15 +123,15 @@ program test
   do i=1,3
      xv(i,1:np_local) = ((xv(i,1:np_local) + nc_offset(i)))*boxsize/real(ncdim)
   enddo
-  print*, xv(4:6,1:np_local)
-  !xv(4:6,1:np_local) = xv(4:6,1:np_local)/sqrt(a)
+  
+  xv(4:6,1:np_local) = xv(4:6,1:np_local)/sqrt(a) * c_vunit
 
 #endif
 
   g_time = a
 
   g_mass(1:6) = 0.0d0
-  g_mass(2) = real(mass_p,8)
+  g_mass(2) = real(c_munit,8)
   g_npart(1:6) = 0
   g_npart(2) = np_local
   mpi_npart = int(np_local,8)
