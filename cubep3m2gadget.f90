@@ -46,7 +46,7 @@ program test
   real(8) :: g_mass(6), g_time, g_redshift, g_Boxsize, g_Omega0, g_OmegaLambda, g_HubbleParam
 
   character(len=100) :: str_rank,z_s,xv_input,pid_input,output
-  real(8) :: redshift
+  real(4) :: redshift
   integer(4) :: totalnodes,rank,ierr
   real(4) :: nc_offset(3)
   integer(4) :: i,j,k
