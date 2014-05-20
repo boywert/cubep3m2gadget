@@ -129,7 +129,7 @@ program test
   call cubep3m_config_init(redshift)
   ! convert cubep3m units -> gadget units 
   do i=1,3
-     xv(i,1:np_local) = ((xv(i,1:np_local) + nc_offset(i)))*boxsize/real(ncdim)
+     xv(i,1:np_local) = ((xv(i,1:np_local) + nc_offset(i)))*c_lunit
   enddo
   
   xv(4:6,1:np_local) = xv(4:6,1:np_local)/sqrt(a) * c_vunit
