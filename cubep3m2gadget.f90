@@ -3,22 +3,31 @@ module cubep3m_config
   real(4), parameter :: H0 = 100.   ![h*km]/[sec*Mpc]
   real(4), parameter :: RHO_CRIT_0 = 2.7755397e11   ! [h^2*Msun]/[Mpc^3]
   real(4) :: Omega0,OmegaLambda,HubbleParam,boxsize
+  real(4) :: c_vunit
   integer(4) :: ngdim,npdim,ncdim,num_files
-  npdim = 1728
-  ngdim = 6 
-  OmegaLambda = 0.73
-  Omega0 = 0.27
-  HubbleParam = 0.7
-  num_files = ngdim**3
-  boxsize = 47.0         !Mpc/h
-  ncdim = 2*npdim
-  contains 
+  
+  contains
+    subroutine cubep3m_config_init(redshift)
+      implicit none
+      real(4) :: redshift
+      npdim = 1728
+      ngdim = 6 
+      OmegaLambda = 0.73
+      Omega0 = 0.27
+      HubbleParam = 0.7
+      num_files = ngdim**3
+      boxsize = 47.0         !Mpc/h
+      ncdim = 2*npdim
+      c_vunit = vunit_compute(redshift)
+      return
+    end subroutine cubep3m_config_init
+
     function vunit_compute(redshift)
       real(4) :: vunit
       real(4) :: redshift
-      vunit = boxsize * 1.5 * sqrt(Omega0) * H0 / (ncdim * (1./(1.+redshift)))
+      vunit_compute = boxsize * 1.5 * sqrt(Omega0) * H0 / (ncdim * (1./(1.+redshift)))
       return
-    end function vunit
+    end function vunit_compute
 end module cubep3m_config
 
 
@@ -41,12 +50,12 @@ program test
   integer(4) :: totalnodes,rank,ierr
   real(4) :: nc_offset(3)
   integer(4) :: i,j,k
-  real(4) :: gadgetmass,vunit
+  real(4) :: gadgetmass
 
   call mpi_init(ierr)
   redshift = 8.064
   gadgetmass = 1.0e10    !Msun
-  vunit = vunit_compute(redshift)
+  call cubep3m_config_init(redshift)
   call mpi_comm_size(mpi_comm_world,totalnodes,ierr)
   if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
   call mpi_comm_rank(mpi_comm_world,rank,ierr)
