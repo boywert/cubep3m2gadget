@@ -73,7 +73,7 @@ program test
      open(23,file="snap.txt",action="write",status="replace")
      redshift_list(:) = -1.0
      i=1
-100  read(22,fmt='(f10.8)',end=200) redshift_list(i)
+100  read(22,fmt='(f11.8)',end=200) redshift_list(i)
      write(23,*) 1./(1.+redshift_list(i))
      i = i+1
      goto 100
@@ -105,7 +105,7 @@ program test
   z_s = adjustl(z_s)
   write(str_rank, "(I10)") rank
   str_rank = adjustl(str_rank)
-  write(numsnap, "(I10)") iz
+  write(numsnap, "(I3.3)") iz
   numsnap = adjustl(numsnap)
   xv_input = "/scratch/00506/ilievit/cubepm_130315_6_1728_47Mpc_ext2/results/"//z_s(1:len_trim(z_s))//"xv"//str_rank(1:len_trim(str_rank))//".dat"
   pid_input = "/scratch/00506/ilievit/cubepm_130315_6_1728_47Mpc_ext2/results/"//z_s(1:len_trim(z_s))//"PID"//str_rank(1:len_trim(str_rank))//".dat"
