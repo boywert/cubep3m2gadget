@@ -50,6 +50,7 @@ program test
   use mpi
   use cubep3m_config
   implicit none
+  integer(4), parameter :: maxsnap = 1000
   integer(4) :: highword,lowword
   integer(4) :: np_local, nts, cur_checkpoint, cur_projection, cur_halofind
   real(4) :: a, t, tau, dt_f_acc, dt_pp_acc, dt_c_acc, mass_p
@@ -65,39 +66,43 @@ program test
   integer(4) :: totalnodes,rank,ierr
   real(4) :: nc_offset(3)
   integer(4) :: iz,i,j,k
-  real(4) :: redshift_list(1000)
+  real(4) :: redshift_list(maxsnap)
 
   call mpi_init(ierr)
-  if(rank == 0) then
-     call system("ls -l")
-     ! open(22,file="./halofinds",action="read",status='old')
-     ! open(23,file="./snap.txt",action="write",status="replace")
-     redshift_list(1:1000) = -1.0
-!      i=1
-! 100  read(22,fmt='(f11.8)',end=200) redshift_list(i)
-!      write(23,*) 1./(1.+redshift_list(i))
-!      print*,redshift_list(i)
-!      i = i+1
-!      goto 100
-! 200  close(22)
-!      close(23)
-     print*,redshift_list
-  endif
-  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
-  call mpi_bcast(redshift_list,100,mpi_real,0,mpi_comm_world,ierr)
-  
-  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
-
-  iz = 0
-300 redshift = redshift_list(iz+1)
-  if(rank == 0) print*, "redshift:",redshift
-  if(redshift < 0.0) goto 400
-  call cubep3m_config_init(redshift)
-
   call mpi_comm_size(mpi_comm_world,totalnodes,ierr)
   if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
   call mpi_comm_rank(mpi_comm_world,rank,ierr)
   if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
+
+  if(rank == 0) then
+     call system("ls -l")
+     open(22,file="./halofinds",action="read",status='old')
+     open(23,file="./snap.txt",action="write",status="replace")
+     redshift_list(1:maxsnap) = -1.0
+     i=1
+100  read(22,fmt='(f11.8)',end=200) redshift_list(i)
+     write(23,*) 1./(1.+redshift_list(i))
+     print*,redshift_list(i)
+     i = i+1
+     goto 100
+200  close(22)
+     close(23)
+     print*,redshift_list
+  endif
+
+  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
+  call mpi_bcast(redshift_list,maxsnap,mpi_real,0,mpi_comm_world,ierr)
+  
+  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
+
+  iz = 0
+300 continue
+  redshift = redshift_list(iz+1)
+  if(rank == 0) print*, "redshift:",redshift
+  if(redshift < 0.0) goto 400
+  call cubep3m_config_init(redshift)
+
+
   ! if(totalnodes /= num_files) then
   !    if(rank == 0) then
   !       print*, "total nodes:",totalnodes,"total files:",num_files
@@ -105,6 +110,7 @@ program test
   !       call abort
   !    endif
   ! endif
+
   write(z_s, "(f10.3)") redshift
   z_s = adjustl(z_s)
   write(str_rank, "(I10)") rank
