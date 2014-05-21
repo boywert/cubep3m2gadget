@@ -174,7 +174,7 @@ long gadget_load_snapshot(char *fname, int files)
 #else
 	      fread(&tmp[0], sizeof(float), 3, fd);
 #endif
-	    
+	     printf("%lf %lf %lf\n",tmp[0],tmp[1],tmp[2]);
 	      /* for(j=0;j<3;j++) */
 	      /* 	{ */
 	      /* 	  printf("%lf %lf %lf\n",tmp[0],tmp[1],tmp[2]); */
@@ -206,8 +206,8 @@ long gadget_load_snapshot(char *fname, int files)
 	      fread(&tmp[0], sizeof(float), 3, fd);
 #endif
 
-	      for(j=0;j<3;j++)
-	        printf("%f %f %f\n",tmp[0],tmp[1],tmp[2]);
+	      //for(j=0;j<3;j++)
+	        //printf("%f %f %f\n",tmp[0],tmp[1],tmp[2]);
 		// P[pc_new].Vel[j] = (float) tmp[j]*(header1.redshift+1.);
 	      pc_new++;
 	    }
