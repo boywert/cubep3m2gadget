@@ -65,14 +65,14 @@ program test
   integer(4) :: totalnodes,rank,ierr
   real(4) :: nc_offset(3)
   integer(4) :: iz,i,j,k
-  real(4) :: redshift_list(100)
+  real(4) :: redshift_list(1000)
 
   call mpi_init(ierr)
   if(rank == 0) then
      call system("ls -l")
      ! open(22,file="./halofinds",action="read",status='old')
      ! open(23,file="./snap.txt",action="write",status="replace")
-     redshift_list(:) = -1.0
+     redshift_list(1:1000) = -1.0
 !      i=1
 ! 100  read(22,fmt='(f11.8)',end=200) redshift_list(i)
 !      write(23,*) 1./(1.+redshift_list(i))
@@ -81,9 +81,11 @@ program test
 !      goto 100
 ! 200  close(22)
 !      close(23)
+     print*,redshift_list
   endif
   call MPI_BARRIER(MPI_COMM_WORLD,ierr)
   call mpi_bcast(redshift_list,100,mpi_real,0,mpi_comm_world,ierr)
+  
   call MPI_BARRIER(MPI_COMM_WORLD,ierr)
 
   iz = 0
