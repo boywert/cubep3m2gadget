@@ -66,13 +66,14 @@ program test
   real(4) :: nc_offset(3)
   integer(4) :: iz,i,j,k
   real(4) :: redshift_list(100)
+
   call mpi_init(ierr)
   if(rank == 0) then
      open(22,file="halofinds",status='old')
      open(23,file="snap.txt",action="write",status="replace")
      redshift_list(:) = -1.0
      i=1
-100  read(22,fmt=*,end=200) redshift_list(i)
+100  read(22,fmt='(f10.8)',end=200) redshift_list(i)
      write(23,*) 1./(1.+redshift_list(i))
      i = i+1
      goto 100
