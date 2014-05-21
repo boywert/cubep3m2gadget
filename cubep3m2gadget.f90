@@ -213,8 +213,8 @@ program test
 
   deallocate(xv,PID)
   iz = iz+1
-  goto 300
   call MPI_BARRIER(MPI_COMM_WORLD,ierr)
+  goto 300
 400 continue
   call MPI_BARRIER(MPI_COMM_WORLD,ierr)
   call mpi_finalize(ierr)
