@@ -69,6 +69,7 @@ program test
 
   call mpi_init(ierr)
   if(rank == 0) then
+     call system("pwd")
      open(22,file="./halofinds",action="read",status='old')
      open(23,file="./snap.txt",action="write",status="replace")
      redshift_list(:) = -1.0
