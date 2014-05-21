@@ -69,6 +69,7 @@ program test
   call mpi_init(ierr)
 
   redshift = 8.064
+  call cubep3m_config_init(redshift)
 
   call mpi_comm_size(mpi_comm_world,totalnodes,ierr)
   if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
@@ -115,7 +116,6 @@ program test
   read(21) PID
   close(21)
 
-  call cubep3m_config_init(redshift)
   if(rank == 0) then
      print*, "lunit:",c_lunit,"Mpc/h"
      print*, "vunit:",c_vunit,"km/s"
