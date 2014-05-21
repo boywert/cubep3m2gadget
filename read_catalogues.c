@@ -223,7 +223,7 @@ long gadget_load_snapshot(char *fname, int files)
 	{
 	  for(n = 0; n < header1.npart[k]; n++)
 	    {
-	      fread(&Id[pc_new], sizeof(int), 1, fd);
+	      // fread(&Id[pc_new], sizeof(int), 1, fd);
 	      pc_new++;
 	    }
 	}
@@ -298,7 +298,7 @@ long gadget_load_snapshot(char *fname, int files)
 	  printf("dummy = %d\n",dummy);	  
 	  if(header1.flag_cooling)
 	    {
-	      SKIP; 
+	      // SKIP; 
 	      // fread(&dummy, sizeof(dummy), 1, fd);
 	      printf("dummy = %d\n",dummy);
 	      for(n = 0, pc_sph = pc; n < header1.npart[0]; n++)
@@ -306,7 +306,7 @@ long gadget_load_snapshot(char *fname, int files)
 		  // fread(&P[pc_sph].Ne, sizeof(float), 1, fd);
 		  pc_sph++;
 		}
-	      SKIP;
+	      // SKIP;
 	      // fread(&dummy, sizeof(dummy), 1, fd);
 	      printf("dummy = %d\n",dummy);
 	      /* SKIP; */
