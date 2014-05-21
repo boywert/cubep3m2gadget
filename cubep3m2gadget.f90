@@ -85,6 +85,7 @@ program test
 
   iz = 0
 300 redshift = redshift_list(iz+1)
+  if(rank == 0) print*, "redshift:",redshift
   if(redshift < 0.0) goto 400
   call cubep3m_config_init(redshift)
 
