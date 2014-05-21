@@ -69,13 +69,13 @@ program test
 
   call mpi_init(ierr)
   if(rank == 0) then
-     call system("pwd")
      open(22,file="./halofinds",action="read",status='old')
      open(23,file="./snap.txt",action="write",status="replace")
      redshift_list(:) = -1.0
      i=1
 100  read(22,fmt='(f11.8)',end=200) redshift_list(i)
      write(23,*) 1./(1.+redshift_list(i))
+     print*,redshift_list(i)
      i = i+1
      goto 100
 200  close(22)
