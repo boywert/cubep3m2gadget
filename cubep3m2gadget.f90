@@ -80,7 +80,7 @@ program test
      open(23,file="./snap.txt",action="write",status="replace")
      redshift_list(1:maxsnap) = -1.0
      i=1
-100  read(22,fmt='(f11.8)',end=200) redshift_list(i)
+100  read(22,fmt=*,end=200) redshift_list(i)
      write(23,*) 1./(1.+redshift_list(i))
      print*,redshift_list(i)
      i = i+1
