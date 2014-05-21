@@ -249,7 +249,7 @@ long gadget_load_snapshot(char *fname, int files)
 	{
 	  for(n = 0; n < header1.npart[k]; n++)
 	    {
-	      P[pc_new].Type = k;
+	      //  P[pc_new].Type = k;
 
 	      if(header1.mass[k] == 0)
 		{
@@ -258,10 +258,10 @@ long gadget_load_snapshot(char *fname, int files)
 #else
 		  fread(&tmp[0], sizeof(float), 1, fd);
 #endif
-		  P[pc_new].Mass = (float) tmp[0];
+		  // P[pc_new].Mass = (float) tmp[0];
 		}
 	      else
-		P[pc_new].Mass = header1.mass[k];
+		// P[pc_new].Mass = header1.mass[k];
 	      pc_new++;
 	    }
 	}
@@ -279,7 +279,7 @@ long gadget_load_snapshot(char *fname, int files)
 	  printf("dummy = %d\n",dummy);
 	  for(n = 0, pc_sph = pc; n < header1.npart[0]; n++)
 	    {
-	      fread(&P[pc_sph].U, sizeof(float), 1, fd);
+	      // fread(&P[pc_sph].U, sizeof(float), 1, fd);
 	      pc_sph++;
 	    }
 	  SKIP; 
@@ -290,7 +290,7 @@ long gadget_load_snapshot(char *fname, int files)
 	  printf("dummy = %d\n",dummy);
 	  for(n = 0, pc_sph = pc; n < header1.npart[0]; n++)
 	    {
-	      fread(&P[pc_sph].Rho, sizeof(float), 1, fd);
+	      // fread(&P[pc_sph].Rho, sizeof(float), 1, fd);
 	      pc_sph++;
 	    }
 	  SKIP; 
@@ -303,7 +303,7 @@ long gadget_load_snapshot(char *fname, int files)
 	      printf("dummy = %d\n",dummy);
 	      for(n = 0, pc_sph = pc; n < header1.npart[0]; n++)
 		{
-		  fread(&P[pc_sph].Ne, sizeof(float), 1, fd);
+		  // fread(&P[pc_sph].Ne, sizeof(float), 1, fd);
 		  pc_sph++;
 		}
 	      SKIP;
@@ -314,7 +314,7 @@ long gadget_load_snapshot(char *fname, int files)
 	  else
 	    for(n = 0, pc_sph = pc; n < header1.npart[0]; n++)
 	      {
-		P[pc_sph].Ne = 1.0;
+		// P[pc_sph].Ne = 1.0;
 		pc_sph++;
 	      }
 	}
