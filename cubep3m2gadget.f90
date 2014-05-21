@@ -74,13 +74,13 @@ program test
   if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
   call mpi_comm_rank(mpi_comm_world,rank,ierr)
   if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
-  ! if(totalnodes /= num_files) then
-  !    if(rank == 0) then
-  !       print*, "total nodes:",totalnodes,"total files:",num_files
-  !       print*, "aborting"
-  !       call abort
-  !    endif
-  ! endif
+  if(totalnodes /= num_files) then
+     if(rank == 0) then
+        print*, "total nodes:",totalnodes,"total files:",num_files
+        print*, "aborting"
+        call abort
+     endif
+  endif
   write(z_s, "(f10.3)") redshift
   z_s = adjustl(z_s)
   write(str_rank, "(I10)") rank
@@ -135,7 +135,8 @@ program test
   do i=1,3
      xv(i,1:np_local) = ((xv(i,1:np_local) + nc_offset(i)))*c_lunit
   enddo
-  
+  print*, rank, nc_offset
+  call abort
   xv(4:6,1:np_local) = xv(4:6,1:np_local)/sqrt(a) * c_vunit
 
 #endif
