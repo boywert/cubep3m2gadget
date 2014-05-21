@@ -91,17 +91,7 @@ program test
   call system("mkdir -p "//trim(output))
   output = trim(output)//"/cube2gadget_000."//str_rank(1:len_trim(str_rank))
 
-  do k=0,ngdim-1
-     do j=0,ngdim-1
-        do i=0,ngdim-1
-           if(rank == i+j*ngdim+k*ngdim**2) then
-              nc_offset(1) = real(i*ncdim/ngdim)
-              nc_offset(2) = real(j*ncdim/ngdim)
-              nc_offset(3) = real(k*ncdim/ngdim)
-           endif
-        enddo
-     enddo
-  enddo
+
 #define EXTRAPID
 
 #ifdef EXTRAPID
@@ -131,6 +121,17 @@ program test
      print*, "vunit:",c_vunit,"km/s"
      print*, "munit:",c_munit,"1.0e10 Msun/h"
   endif
+  do k=0,ngdim-1
+     do j=0,ngdim-1
+        do i=0,ngdim-1
+           if(rank == i+j*ngdim+k*ngdim**2) then
+              nc_offset(1) = real(i*ncdim/ngdim)
+              nc_offset(2) = real(j*ncdim/ngdim)
+              nc_offset(3) = real(k*ncdim/ngdim)
+           endif
+        enddo
+     enddo
+  enddo
   ! convert cubep3m units -> gadget units 
   do i=1,3
      xv(i,1:np_local) = ((xv(i,1:np_local) + nc_offset(i)))*c_lunit
