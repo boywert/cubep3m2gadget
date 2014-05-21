@@ -335,5 +335,5 @@ long gadget_load_snapshot(char *fname, int files)
 
 int main ()
 {
-  printf("%ld\n",gadget_load_snapshot("/scratch/01937/cs390/test/8.064/8.064",2048));
+  printf("%ld\n",gadget_load_snapshot("/scratch/01937/cs390/cubepm_130315_6_1728_47Mpc_ext2/cube2gadget",216));
 }
