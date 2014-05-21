@@ -60,37 +60,56 @@ program test
   integer(4) :: g_flag_stellarage, g_flag_metals, g_nhighword(6), g_filler(16)
   real(8) :: g_mass(6), g_time, g_redshift, g_Boxsize, g_Omega0, g_OmegaLambda, g_HubbleParam
 
-  character(len=100) :: str_rank,z_s,xv_input,pid_input,output
+  character(len=100) :: str_rank,z_s,xv_input,pid_input,output,numsnap
   real(4) :: redshift
   integer(4) :: totalnodes,rank,ierr
   real(4) :: nc_offset(3)
-  integer(4) :: i,j,k
-
+  integer(4) :: iz,i,j,k
+  real(4) :: redshift_list(100)
   call mpi_init(ierr)
+  if(rank == 0) then
+     open(22,file="halofinds",status='old')
+     open(23,file="snap.txt")
+     redshift_list(:) = -1.0
+     i=1
+100  read(22,fmt=*,end=200) redshift_list(i)
+     write(23,*) 1./(1.+redshift_list(i))
+     i = i+1
+     goto 100
+200  close(22)
+     close(23)
+  endif
+  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
+  call mpi_bcast(redshift_list,100,mpi_real,0,mpi_comm_world,ierr)
+  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
 
-  redshift = 8.064
+  iz = 0
+300 redshift = redshift_list(iz+1)
+  if(redshift < 0.0) goto 400
   call cubep3m_config_init(redshift)
 
   call mpi_comm_size(mpi_comm_world,totalnodes,ierr)
   if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
   call mpi_comm_rank(mpi_comm_world,rank,ierr)
   if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
-  if(totalnodes /= num_files) then
-     if(rank == 0) then
-        print*, "total nodes:",totalnodes,"total files:",num_files
-        print*, "aborting"
-        call abort
-     endif
-  endif
+  ! if(totalnodes /= num_files) then
+  !    if(rank == 0) then
+  !       print*, "total nodes:",totalnodes,"total files:",num_files
+  !       print*, "aborting"
+  !       call abort
+  !    endif
+  ! endif
   write(z_s, "(f10.3)") redshift
   z_s = adjustl(z_s)
   write(str_rank, "(I10)") rank
   str_rank = adjustl(str_rank)
+  write(numsnap, "(I10)") iz
+  numsnap = adjustl(numsnap)
   xv_input = "/scratch/00506/ilievit/cubepm_130315_6_1728_47Mpc_ext2/results/"//z_s(1:len_trim(z_s))//"xv"//str_rank(1:len_trim(str_rank))//".dat"
   pid_input = "/scratch/00506/ilievit/cubepm_130315_6_1728_47Mpc_ext2/results/"//z_s(1:len_trim(z_s))//"PID"//str_rank(1:len_trim(str_rank))//".dat"
-  output = "/scratch/01937/cs390/cubepm_130315_6_1728_47Mpc_ext2/snapdir_000/" !//z_s(1:len_trim(z_s))//"/"
+  output = "/scratch/01937/cs390/cubepm_130315_6_1728_47Mpc_ext2/snapdir_"// numsnap(1:len_trim(numsnap))//"/" !//z_s(1:len_trim(z_s))//"/"
   call system("mkdir -p "//trim(output))
-  output = trim(output)//"/cube2gadget_000."//str_rank(1:len_trim(str_rank))
+  output = trim(output)//"/cube2gadget_"//numsnap(1:len_trim(numsnap))//"."//str_rank(1:len_trim(str_rank))
 
 
 #define EXTRAPID
@@ -181,6 +200,10 @@ program test
   close(21)
 
   deallocate(xv,PID)
-
+  iz = iz+1
+  goto 300
+  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
+400 continue
+  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
   call mpi_finalize(ierr)
 end program test
