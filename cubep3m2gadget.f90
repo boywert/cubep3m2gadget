@@ -69,7 +69,7 @@ program test
   call mpi_init(ierr)
   if(rank == 0) then
      open(22,file="halofinds",status='old')
-     open(23,file="snap.txt")
+     open(23,file="snap.txt",action="write",status="replace")
      redshift_list(:) = -1.0
      i=1
 100  read(22,fmt=*,end=200) redshift_list(i)
