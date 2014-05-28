@@ -67,6 +67,7 @@ program test
   real(4) :: nc_offset(3)
   integer(4) :: iz,i,j,k
   real(4) :: redshift_list(maxsnap)
+  integer(4) :: offset_rank
 
   call mpi_init(ierr)
   call mpi_comm_size(mpi_comm_world,totalnodes,ierr)
@@ -87,7 +88,6 @@ program test
      goto 100
 200  close(22)
      close(23)
-     print*,redshift_list
   endif
 
   call MPI_BARRIER(MPI_COMM_WORLD,ierr)
@@ -96,6 +96,7 @@ program test
   call MPI_BARRIER(MPI_COMM_WORLD,ierr)
 
   iz = 0
+  offset_rank = 0
 300 continue
   redshift = redshift_list(iz+1)
   if(rank == 0) print*, "redshift:",redshift
@@ -111,9 +112,10 @@ program test
   !    endif
   ! endif
 
+
   write(z_s, "(f10.3)") redshift
   z_s = adjustl(z_s)
-  write(str_rank, "(I10)") rank
+  write(str_rank, "(I10)") rank+offset_rank
   str_rank = adjustl(str_rank)
   write(numsnap, "(I3.3)") iz
   numsnap = adjustl(numsnap)
@@ -201,15 +203,36 @@ program test
   if(rank == 0) print*, g_npartTotal
   g_nhighword(2) = ishft(mpi_nparttotal,-32)
   if(rank == 0) print*,g_nhighword
-  open(unit=21,file=trim(output),form='unformatted')
 
-  write(21) g_npart, g_mass, g_time, g_redshift, g_flag_sfr, g_flag_feedback, g_npartTotal, &
-       g_flag_cooling, g_num_files, g_boxsize, g_Omega0, g_OmegaLambda, g_HubbleParam, &
-       g_flag_stellarage, g_flag_metals, g_nhighword, g_filler
-  write(21) xv(1:3,1:np_local)
-  write(21) xv(4:6,1:np_local)
-  write(21) PID(1:np_local)
-  close(21)
+  if(mod(rank,2) == 0) then
+
+     open(unit=21,file=trim(output),form='unformatted')
+
+     write(21) g_npart, g_mass, g_time, g_redshift, g_flag_sfr, g_flag_feedback, g_npartTotal, &
+          g_flag_cooling, g_num_files, g_boxsize, g_Omega0, g_OmegaLambda, g_HubbleParam, &
+          g_flag_stellarage, g_flag_metals, g_nhighword, g_filler
+     write(21) xv(1:3,1:np_local)
+     write(21) xv(4:6,1:np_local)
+     write(21) PID(1:np_local)
+     close(21)
+  endif
+
+  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
+
+  if(mod(rank,2) /= 0) then
+
+     open(unit=21,file=trim(output),form='unformatted')
+
+     write(21) g_npart, g_mass, g_time, g_redshift, g_flag_sfr, g_flag_feedback, g_npartTotal, &
+          g_flag_cooling, g_num_files, g_boxsize, g_Omega0, g_OmegaLambda, g_HubbleParam, &
+          g_flag_stellarage, g_flag_metals, g_nhighword, g_filler
+     write(21) xv(1:3,1:np_local)
+     write(21) xv(4:6,1:np_local)
+     write(21) PID(1:np_local)
+     close(21)
+  endif
+
+  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
 
   deallocate(xv,PID)
   iz = iz+1
