@@ -205,7 +205,6 @@ program test
   if(rank == 0) print*,g_nhighword
 
   if(mod(rank,2) == 0) then
-
      open(unit=21,file=trim(output),form='unformatted')
 
      write(21) g_npart, g_mass, g_time, g_redshift, g_flag_sfr, g_flag_feedback, g_npartTotal, &
@@ -220,9 +219,7 @@ program test
   call MPI_BARRIER(MPI_COMM_WORLD,ierr)
 
   if(mod(rank,2) /= 0) then
-
      open(unit=21,file=trim(output),form='unformatted')
-
      write(21) g_npart, g_mass, g_time, g_redshift, g_flag_sfr, g_flag_feedback, g_npartTotal, &
           g_flag_cooling, g_num_files, g_boxsize, g_Omega0, g_OmegaLambda, g_HubbleParam, &
           g_flag_stellarage, g_flag_metals, g_nhighword, g_filler
