@@ -76,7 +76,6 @@ program test
   if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
 
   if(rank == 0) then
-     call system("ls -l")
      open(22,file="./halofinds",action="read",status='old')
      open(23,file="./snap.txt",action="write",status="replace")
      redshift_list(1:maxsnap) = -1.0
