@@ -121,7 +121,9 @@ program test
   xv_input = "/scratch/00506/ilievit/cubepm_130315_6_1728_47Mpc_ext2/results/"//z_s(1:len_trim(z_s))//"xv"//str_rank(1:len_trim(str_rank))//".dat"
   pid_input = "/scratch/00506/ilievit/cubepm_130315_6_1728_47Mpc_ext2/results/"//z_s(1:len_trim(z_s))//"PID"//str_rank(1:len_trim(str_rank))//".dat"
   output = "/scratch/01937/cs390/cubepm_130315_6_1728_47Mpc_ext2/snapdir_"// numsnap(1:len_trim(numsnap))//"/" !//z_s(1:len_trim(z_s))//"/"
-  call system("mkdir -p "//trim(output))
+  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
+  if(rank == 0) call system("mkdir -p "//trim(output))
+  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
   output = trim(output)//"/cube2gadget_"//numsnap(1:len_trim(numsnap))//"."//str_rank(1:len_trim(str_rank))
 
 
