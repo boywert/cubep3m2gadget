@@ -338,3 +338,5 @@ int main ()
 {
   //printf("%ld\n",gadget_load_snapshot("/scratch/01937/cs390/cubepm_130315_6_1728_47Mpc_ext2/snapdir_000/cube2gadget_000",216));
   printf("%ld\n",gadget_load_snapshot("/scratch/01937/cs390/ICs/ICdat",2048));
+  return 0;
+}
