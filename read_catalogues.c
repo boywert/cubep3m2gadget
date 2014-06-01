@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <math.h>
 // #define AQUARIUS
 #define makeLong(hi, low) (((long) hi) << 32 | (low))
 struct Gadget_particle
@@ -152,6 +152,7 @@ long gadget_load_snapshot(char *fname, int files)
       printf("Omega0 : %lf\n",header1.Omega0);
       printf("OmegaLambda : %lf\n",header1.OmegaLambda);
       printf("HubbleParam : %lf\n",header1.HubbleParam);
+      exit();
       for(k=0;k<16;k++)
       	{
       	  printf("fillers[%d] : %d\n",k, header1.filler[k]);
@@ -205,7 +206,7 @@ long gadget_load_snapshot(char *fname, int files)
 #else
 	      fread(&tmp[0], sizeof(float), 3, fd);
 #endif
-	      if(n%10000 == 0) printf("%f %f %f\n",tmp[0],tmp[1],tmp[2]);
+	      if(n%10000 == 0) printf("%f %f %f\n",tmp[0]*sqrt(),tmp[1],tmp[2]);
 	      //for(j=0;j<3;j++)
 	        //printf("%f %f %f\n",tmp[0],tmp[1],tmp[2]);
 		// P[pc_new].Vel[j] = (float) tmp[j]*(header1.redshift+1.);
