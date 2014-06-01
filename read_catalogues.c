@@ -206,7 +206,7 @@ long gadget_load_snapshot(char *fname, int files)
 #else
 	      fread(&tmp[0], sizeof(float), 3, fd);
 #endif
-	      if(n%10000 == 0) printf("%f %f %f\n",tmp[0]*sqrt(header1.time),tmp[1]*sqrt(header1.time),tmp[2]*sqrt(header1.time));
+	      if(n%10000 == 0) printf("%f %f %f\n",tmp[0],tmp[1],tmp[2]);
 	      //for(j=0;j<3;j++)
 	        //printf("%f %f %f\n",tmp[0],tmp[1],tmp[2]);
 		// P[pc_new].Vel[j] = (float) tmp[j]*(header1.redshift+1.);
