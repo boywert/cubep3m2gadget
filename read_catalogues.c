@@ -152,7 +152,7 @@ long gadget_load_snapshot(char *fname, int files)
       printf("Omega0 : %lf\n",header1.Omega0);
       printf("OmegaLambda : %lf\n",header1.OmegaLambda);
       printf("HubbleParam : %lf\n",header1.HubbleParam);
-      exit(0);
+ 
       for(k=0;k<16;k++)
       	{
       	  printf("fillers[%d] : %d\n",k, header1.filler[k]);
