@@ -77,9 +77,9 @@ module cube2gadget_module
       character(len=100) :: str_rank,z_s,xv_input,pid_input,output,numsnap
       real(4) :: redshift
       real(4) :: nc_offset(3)
-      integer(4) :: isnap,i,j,k
+      integer(4) :: isnap,iz,i,j,k
       integer(4) :: offset_rank
-
+      iz = isnap - 1
       offset_rank = 0
       redshift = redshift_list(isnap)
       if(rank == 0) print*, "redshift:",redshift
