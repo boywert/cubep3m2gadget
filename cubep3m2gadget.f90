@@ -30,12 +30,6 @@ module cube2gadget_module
     subroutine cubep3m_config_init(redshift)
       implicit none
       real(4) :: redshift
-      npdim = 1728
-      ngdim = 6 
-      OmegaLambda = 0.73
-      Omega0 = 0.27
-      HubbleParam = 0.7
-      boxsize = 47.0         !Mpc/h
       num_files = ngdim**3
       ncdim = 2*npdim
       c_vunit = vunit_compute(redshift)
