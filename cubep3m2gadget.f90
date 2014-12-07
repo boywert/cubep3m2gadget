@@ -21,11 +21,14 @@ module cube2gadget_module
   use mympi
   use mpi
   implicit none
+  integer(4), parameter :: maxsnap = 1000
+  integer(4) :: totalsnaps
   real(4), parameter :: H0 = 100.   ![h*km]/[sec*Mpc]
   real(4), parameter :: RHO_CRIT_0 = 2.7755397e11   ! [h^2*Msun]/[Mpc^3]27.7473406739
   real(4) :: Omega0,OmegaLambda,HubbleParam,boxsize
   real(4) :: c_vunit, c_munit, c_lunit
   integer(4) :: ngdim,npdim,ncdim,num_files
+  real(4) :: redshift_list(maxsnap)
   contains
     subroutine cubep3m_config_init(redshift)
       implicit none
@@ -58,10 +61,9 @@ module cube2gadget_module
       return 
     end function lunit_compute
 
-    subroutine cube2gadget_call(input_prefix,output_prefix)
+    subroutine cube2gadget_call(input_prefix,output_prefix,isnap)
       implicit none
       character(len=1000) :: input_prefix,output_prefix
-      integer(4), parameter :: maxsnap = 1000
       integer(4) :: highword,lowword
       integer(4) :: np_local, nts, cur_checkpoint, cur_projection, cur_halofind
       real(4) :: a, t, tau, dt_f_acc, dt_pp_acc, dt_c_acc, mass_p
@@ -75,32 +77,11 @@ module cube2gadget_module
       character(len=100) :: str_rank,z_s,xv_input,pid_input,output,numsnap
       real(4) :: redshift
       real(4) :: nc_offset(3)
-      integer(4) :: iz,i,j,k
-      real(4) :: redshift_list(maxsnap)
+      integer(4) :: isnap,i,j,k
       integer(4) :: offset_rank
 
-      if(rank == 0) then
-         open(22,file="./halofinds",action="read",status='old')
-         open(23,file="./snap.txt",action="write",status="replace")
-         redshift_list(1:maxsnap) = -1.0
-         i=1
-    100  read(22,fmt=*,end=200) redshift_list(i)
-         write(23,*) 1./(1.+redshift_list(i))
-         print*,redshift_list(i)
-         i = i+1
-         goto 100
-    200  close(22)
-         close(23)
-      endif
-
-      call MPI_BARRIER(MPI_COMM_WORLD,ierr)
-      call mpi_bcast(redshift_list,maxsnap,mpi_real,0,mpi_comm_world,ierr)
-      
-      call MPI_BARRIER(MPI_COMM_WORLD,ierr)
-      iz = 0
       offset_rank = 0
-    300 continue
-      redshift = redshift_list(iz+1)
+      redshift = redshift_list(isnap)
       if(rank == 0) print*, "redshift:",redshift
       if(redshift < 0.0) goto 400
       call cubep3m_config_init(redshift)
@@ -237,10 +218,6 @@ module cube2gadget_module
       ! call MPI_BARRIER(MPI_COMM_WORLD,ierr)
 
       deallocate(xv,PID)
-      iz = iz+1
-      call MPI_BARRIER(MPI_COMM_WORLD,ierr)
-      goto 300
-400 continue
       call MPI_BARRIER(MPI_COMM_WORLD,ierr)
     end subroutine cube2gadget_call
 end module cube2gadget_module
@@ -251,8 +228,25 @@ program main
   implicit none
   character(len=1000) :: input_dir,output_dir  
   call mympi_init
+  if(rank == 0) then
+   open(22,file="./halofinds",action="read",status='old')
+   open(23,file="./snap.txt",action="write",status="replace")
+   redshift_list(1:maxsnap) = -1.0
+   totalsnaps=1
+100  read(22,fmt=*,end=200) redshift_list(i)
+   write(23,*) 1./(1.+redshift_list(i))
+   print*,redshift_list(i)
+   totalsnaps = totalsnaps+1
+   goto 100
+200  close(22)
+   close(23)
+  endif
+  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
+  call mpi_bcast(redshift_list,maxsnap,mpi_real,0,mpi_comm_world,ierr)
+  call mpi_bcast(totalsnaps,1,mpi_integer,0,mpi_comm_world,ierr)
+  call MPI_BARRIER(MPI_COMM_WORLD,ierr)
 #include "config.f90"
-  call cube2gadget_call(input_dir,output_dir)
+  call cube2gadget_call(input_dir,output_dir,76)
   call mympi_end
 end program main  
 

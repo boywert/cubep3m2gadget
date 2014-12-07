@@ -4,5 +4,5 @@
   Omega0 = 0.27
   HubbleParam = 0.7
   boxsize = 47.0         !Mpc/h
-  input = ""
-  output = ""
+  input_dir = ""
+  output_dir = ""
