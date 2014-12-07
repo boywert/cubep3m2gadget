@@ -82,6 +82,7 @@ module cube2gadget_module
       iz = isnap - 1
       offset_rank = 0
       redshift = redshift_list(isnap)
+      if(rank == 0) print*,redshift_lists
       if(rank == 0) print*, "redshift:",redshift
       if(redshift < 0.0) return
       call cubep3m_config_init(redshift)
