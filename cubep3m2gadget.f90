@@ -226,6 +226,7 @@ program main
   use mympi
   use cube2gadget_module
   implicit none
+  integer :: i
   character(len=1000) :: input_dir,output_dir  
   call mympi_init
   if(rank == 0) then
