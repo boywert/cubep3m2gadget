@@ -132,9 +132,8 @@ module cube2gadget_module
       output = trim(output)//"/cube2gadget_"//numsnap(1:len_trim(numsnap))//"."//str_rank(1:len_trim(str_rank))
 
 
-    #define EXTRAPID
-
-    #ifdef EXTRAPID
+#define EXTRAPID
+#ifdef EXTRAPID
       open(unit=21,file=trim(xv_input),status='old',form='binary')
       read(21) np_local,a,t,tau,nts,dt_f_acc,dt_pp_acc,dt_c_acc,cur_checkpoint, &
            cur_projection,cur_halofind,mass_p
@@ -178,7 +177,7 @@ module cube2gadget_module
      
       xv(4:6,1:np_local) = xv(4:6,1:np_local)/sqrt(a) * c_vunit
 
-    #endif
+#endif
 
       g_time = a
 
@@ -243,7 +242,7 @@ module cube2gadget_module
       goto 300
 400 continue
       call MPI_BARRIER(MPI_COMM_WORLD,ierr)
-    end subroutine cube2gadget
+    end subroutine cube2gadget_call
 end module cube2gadget_module
 
 program main
