@@ -60,6 +60,7 @@ module cube2gadget_module
 
     subroutine cube2gadget_call(input_prefix,output_prefix)
       implicit none
+      character(len=1000) :: input_prefix,output_prefix
       integer(4), parameter :: maxsnap = 1000
       integer(4) :: highword,lowword
       integer(4) :: np_local, nts, cur_checkpoint, cur_projection, cur_halofind
