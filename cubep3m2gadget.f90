@@ -247,6 +247,7 @@ program main
   call mpi_bcast(totalsnaps,1,mpi_integer,0,mpi_comm_world,ierr)
   call MPI_BARRIER(MPI_COMM_WORLD,ierr)
 #include "config.f90"
+  if(rank == 0) print*,"totalsnaps",totalsnaps
   call cube2gadget_call(input_dir,output_dir,5)
   call mympi_end
 end program main  
