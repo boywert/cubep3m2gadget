@@ -93,7 +93,7 @@ module cube2gadget_module
       !       print*, "total nodes:",totalnodes,"total files:",num_files
       !       print*, "aborting"
       !       call abort
-      !    endif
+        !    endif
       ! endif
 
 
@@ -182,7 +182,8 @@ module cube2gadget_module
       call MPI_BARRIER(MPI_COMM_WORLD,ierr)
       call mpi_allreduce(mpi_npart,mpi_nparttotal,1,mpi_integer8,mpi_sum,mpi_comm_world,ierr)
       call MPI_BARRIER(MPI_COMM_WORLD,ierr)
-
+      print*,mpi_npart
+      call MPI_BARRIER(MPI_COMM_WORLD,ierr)
       g_npartTotal(1:6) = 0
       g_nhighword(1:6) = 0
       if(rank == 0 ) print*,"total N",mpi_nparttotal
