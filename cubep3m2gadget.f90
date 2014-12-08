@@ -82,7 +82,6 @@ module cube2gadget_module
       iz = isnap - 1
       offset_rank = 0
       redshift = redshift_list(isnap)
-      if(rank == 0) print*,redshift_list
       if(rank == 0) print*, "redshift:",redshift
       if(redshift < 0.0) return
       call cubep3m_config_init(redshift)
@@ -185,7 +184,6 @@ module cube2gadget_module
 
       g_npartTotal(1:6) = 0
       g_nhighword(1:6) = 0
-      print*,"total particles",mpi_nparttotal
       if(rank == 0 ) print*,"total N",mpi_nparttotal
       g_npartTotal(2) = iand(mpi_nparttotal,2**32-1)
       if(rank == 0) print*, g_npartTotal
