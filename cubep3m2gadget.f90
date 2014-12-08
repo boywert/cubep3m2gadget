@@ -74,7 +74,7 @@ module cube2gadget_module
       integer(4) :: g_flag_stellarage, g_flag_metals, g_nhighword(6), g_filler(16)
       real(8) :: g_mass(6), g_time, g_redshift, g_Boxsize, g_Omega0, g_OmegaLambda, g_HubbleParam
 
-      character(len=100) :: str_rank,z_s,xv_input,pid_input,output,numsnap
+      character(len=1000) :: str_rank,z_s,xv_input,pid_input,output,numsnap
       real(4) :: redshift
       real(4) :: nc_offset(3)
       integer(4) :: isnap,iz,i,j,k
