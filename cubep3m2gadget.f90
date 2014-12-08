@@ -231,17 +231,19 @@ program main
   character(len=1000) :: input_dir,output_dir  
   call mympi_init
   if(rank == 0) then
-   open(22,file="./halofinds",action="read",status='old')
-   open(23,file="./snap.txt",action="write",status="replace")
-   redshift_list(1:maxsnap) = -1.0
-   totalsnaps=0
+    i = 1
+    open(22,file="./halofinds",action="read",status='old')
+    open(23,file="./snap.txt",action="write",status="replace")
+    redshift_list(1:maxsnap) = -1.0
+    totalsnaps=0
 100  read(22,fmt=*,end=200) redshift_list(i)
-   write(23,*) 1./(1.+redshift_list(i))
-   print*,redshift_list(i)
-   totalsnaps = totalsnaps+1
-   goto 100
+    write(23,*) 1./(1.+redshift_list(i))
+    print*,redshift_list(i)
+    totalsnaps = totalsnaps+1
+    i = i+1
+    goto 100
 200  close(22)
-   close(23)
+    close(23)
   endif
   call MPI_BARRIER(MPI_COMM_WORLD,ierr)
   call mpi_bcast(redshift_list,maxsnap,mpi_real,0,mpi_comm_world,ierr)
