@@ -234,7 +234,7 @@ program main
    open(22,file="./halofinds",action="read",status='old')
    open(23,file="./snap.txt",action="write",status="replace")
    redshift_list(1:maxsnap) = -1.0
-   totalsnaps=1
+   totalsnaps=0
 100  read(22,fmt=*,end=200) redshift_list(i)
    write(23,*) 1./(1.+redshift_list(i))
    print*,redshift_list(i)
