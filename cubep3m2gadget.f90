@@ -10,6 +10,7 @@ module mympi
       if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
       call mpi_comm_rank(mpi_comm_world,rank,ierr)
       if (ierr /= mpi_success) call mpi_abort(mpi_comm_world,ierr,ierr)
+      if(rank == 0) print*,"Total MPI Tasks:",totalnodes
     end subroutine mympi_init
     subroutine mympi_end()
       implicit none
