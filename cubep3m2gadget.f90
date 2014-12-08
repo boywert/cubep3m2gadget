@@ -251,7 +251,7 @@ program main
   call MPI_BARRIER(MPI_COMM_WORLD,ierr)
 #include "config.f90"
   if(rank == 0) print*,"totalsnaps",totalsnaps
-  call cube2gadget_call(input_dir,output_dir,5)
+  call cube2gadget_call(input_dir,output_dir,76)
   call mympi_end
 end program main  
 
