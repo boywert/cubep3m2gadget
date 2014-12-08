@@ -185,6 +185,7 @@ module cube2gadget_module
 
       g_npartTotal(1:6) = 0
       g_nhighword(1:6) = 0
+      print*,"total particles",mpi_nparttotal
       if(rank == 0 ) print*,"total N",mpi_nparttotal
       g_npartTotal(2) = iand(mpi_nparttotal,2**32-1)
       if(rank == 0) print*, g_npartTotal
