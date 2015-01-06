@@ -251,6 +251,7 @@ program main
   integer :: i
   integer :: startsnap,stopsnap
   character(len=100) :: snapstr
+  character(len=1000) :: prefix
   integer :: snap
   character(len=1000) :: input_dir,output_dir  
   call mympi_init
