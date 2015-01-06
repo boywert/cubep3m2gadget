@@ -6,3 +6,4 @@
   boxsize = 244.0         !Mpc/h
   input_dir = "/ccc/cont005/home/ra1089/srisawac/ilian_dir/cubepm_130329_10_4000_244Mpc_ext2_test/results/"
   output_dir = "/ccc/scratch/cont005/ra1089/srisawac/cubepm_130329_10_4000_244Mpc_ext2_test/gadget/"
+  prefix = "cubepm_130329_10_4000_244Mpc_ext2_test_"

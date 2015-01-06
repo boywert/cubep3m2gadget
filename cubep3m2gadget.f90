@@ -62,9 +62,9 @@ module cube2gadget_module
       return 
     end function lunit_compute
 
-    subroutine cube2gadget_call(input_prefix,output_prefix,isnap)
+    subroutine cube2gadget_call(input_prefix,output_prefix,name_prefix,isnap)
       implicit none
-      character(len=1000) :: input_prefix,output_prefix
+      character(len=1000) :: input_prefix,output_prefix,name_prefix
       integer(4) :: highword,lowword
       integer(4) :: np_local, nts, cur_checkpoint, cur_projection, cur_halofind
       real(4) :: a, t, tau, dt_f_acc, dt_pp_acc, dt_c_acc, mass_p
@@ -105,21 +105,35 @@ module cube2gadget_module
       numsnap = adjustl(numsnap)
       input_prefix = adjustl(input_prefix)
       output_prefix = adjustl(output_prefix)
+#ifndef IC
       xv_input = input_prefix(1:len_trim(input_prefix))//z_s(1:len_trim(z_s))//"xv"//str_rank(1:len_trim(str_rank))//".dat"
       pid_input = input_prefix(1:len_trim(input_prefix))//z_s(1:len_trim(z_s))//"PID"//str_rank(1:len_trim(str_rank))//".dat"
-      output = output_prefix(1:len_trim(output_prefix))//"snapdir_"// numsnap(1:len_trim(numsnap))//"/" 
+       output = output_prefix(1:len_trim(output_prefix))//"snapdir_"// numsnap(1:len_trim(numsnap))//"/" 
+#else
+      xv_input = input_prefix(1:len_trim(input_prefix))//z_s(1:len_trim(z_s))//"xv"//str_rank(1:len_trim(str_rank))//".IC"
+      pid_input = input_prefix(1:len_trim(input_prefix))//z_s(1:len_trim(z_s))//"PID"//str_rank(1:len_trim(str_rank))//".IC"
+      output = output_prefix(1:len_trim(output_prefix))//"ICs/" 
+#endif
       call MPI_BARRIER(MPI_COMM_WORLD,ierr)
       if(rank == 0) call system("mkdir -p "//trim(output))
       call MPI_BARRIER(MPI_COMM_WORLD,ierr)
-      output = trim(output)//"/cube2gadget_"//numsnap(1:len_trim(numsnap))//"."//str_rank(1:len_trim(str_rank))
+      name_prefix = adjustl(name_prefix)
+#ifndef IC
+      output = trim(output)//"/"+name_prefix(1:len_trim(name_prefix))+"_"//numsnap(1:len_trim(numsnap))//"."//str_rank(1:len_trim(str_rank))
+#else
+      output = trim(output)//"/"+name_prefix(1:len_trim(name_prefix))+"_ics.gdt."//str_rank(1:len_trim(str_rank))
+#endif
 
 
 #define EXTRAPID
 #ifdef EXTRAPID
       open(unit=21,file=trim(xv_input),status='old',form='binary')
+#ifndef IC
       read(21) np_local,a,t,tau,nts,dt_f_acc,dt_pp_acc,dt_c_acc,cur_checkpoint, &
            cur_projection,cur_halofind,mass_p
-
+#else
+      read(21) np_local
+#endif
       allocate(PID(1:np_local))
       allocate(xv(1:6,1:np_local))
 
@@ -127,10 +141,16 @@ module cube2gadget_module
       close(21)
 
       open(unit=21,file=trim(pid_input),status='old',form='binary')
+#ifndef IC
       read(21) np_local,a,t,tau,nts,dt_f_acc,dt_pp_acc,dt_c_acc,cur_checkpoint, &
            cur_projection,cur_halofind,mass_p
       if (rank==0) print*, np_local,a,t,tau,nts,dt_f_acc,dt_pp_acc,dt_c_acc,cur_checkpoint, &
            cur_projection,cur_halofind,mass_p
+#else
+      read(21) np_local
+      if (rank==0) print*, np_local
+#endif
+      
 
 
       read(21) PID
@@ -229,8 +249,13 @@ program main
   use cube2gadget_module
   implicit none
   integer :: i
+  integer :: startsnap,stopsnap
+  character(len=100) :: snapstr
+  integer :: snap
   character(len=1000) :: input_dir,output_dir  
   call mympi_init
+  call getarg(1,snapstr)
+  read (snapstr) snap
   if(rank == 0) then
     i = 1
     open(22,file="./halofinds",action="read",status='old')
@@ -252,7 +277,11 @@ program main
   call MPI_BARRIER(MPI_COMM_WORLD,ierr)
 #include "config.f90"
   if(rank == 0) print*,"totalsnaps",totalsnaps
-  call cube2gadget_call(input_dir,output_dir,76)
+#ifndef IC
+  call cube2gadget_call(input_dir,output_dir,prefix,76)
+#else
+  call cube2gadget_call(input_dir,output_dir,prefix,-1)
+#endif
   call mympi_end
 end program main  
 
