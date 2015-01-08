@@ -256,7 +256,7 @@ program main
   character(len=1000) :: input_dir,output_dir  
   call mympi_init
   call getarg(1,snapstr)
-  read (snapstr) snap
+  read (snapstr, '(i10)') snap'
   if(rank == 0) then
     i = 1
     open(22,file="./halofinds",action="read",status='old')
