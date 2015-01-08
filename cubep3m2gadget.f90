@@ -119,9 +119,9 @@ module cube2gadget_module
       call MPI_BARRIER(MPI_COMM_WORLD,ierr)
       name_prefix = adjustl(name_prefix)
 #ifndef IC
-      output = trim(output)//"/"+name_prefix(1:len_trim(name_prefix))+"_"//numsnap(1:len_trim(numsnap))//"."//str_rank(1:len_trim(str_rank))
+      output = trim(output)//"/"//name_prefix(1:len_trim(name_prefix))//"_"//numsnap(1:len_trim(numsnap))//"."//str_rank(1:len_trim(str_rank))
 #else
-      output = trim(output)//"/"+name_prefix(1:len_trim(name_prefix))+"_ics.gdt."//str_rank(1:len_trim(str_rank))
+      output = trim(output)//"/"//name_prefix(1:len_trim(name_prefix))//"_ics.gdt."//str_rank(1:len_trim(str_rank))
 #endif
 
 
