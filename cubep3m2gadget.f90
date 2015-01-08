@@ -220,7 +220,11 @@ module cube2gadget_module
               g_flag_stellarage, g_flag_metals, g_nhighword, g_filler
          write(21) xv(1:3,1:np_local)
          write(21) xv(4:6,1:np_local)
+#ifdef LONGIDS
          write(21) PID(1:np_local)
+#else
+         write(21) int(PID(1:np_local),4)
+#endif
          close(21)
       endif
 
