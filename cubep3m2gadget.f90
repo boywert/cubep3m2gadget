@@ -283,7 +283,7 @@ program main
 #include "config.f90"
   if(rank == 0) print*,"totalsnaps",totalsnaps
 #ifndef IC
-  call cube2gadget_call(input_dir,output_dir,prefix,76)
+  call cube2gadget_call(input_dir,output_dir,prefix,snap)
 #else
   call cube2gadget_call(input_dir,output_dir,prefix,-1)
 #endif
